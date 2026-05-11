@@ -143,11 +143,11 @@ npm test
 | Mantenibilidad | 84% | Bueno |
 
 ## 👤 Autor
-[Tu nombre completo]  
-Matrícula: [Tu matrícula]  
+BIRM 
+ 
 Materia: Ingeniería de Software  
-Institución: Universidad Tecnológica  
-Fecha: Mayo 2025
+Institución: ULA
+Fecha: Mayo 2026
 
 ## 📚 Metodología
 Desarrollado bajo la metodología **SCRUM** con sprints de 2 semanas.  
