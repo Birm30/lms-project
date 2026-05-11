@@ -8,197 +8,226 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4ff; color: #333; font-size: 14px; }
-:root { --azul:#1a237e; --azul2:#3949ab; --azul3:#e8eaf6; --verde:#2e7d32; --naranja:#e65100; --gris:#f5f5f5; --borde:#dde3ff; }
-.app { display:flex; height:100vh; overflow:hidden; }
-.sidebar { width:210px; background:var(--azul); color:#fff; display:flex; flex-direction:column; flex-shrink:0; }
-.sidebar-logo { padding:18px 16px; border-bottom:1px solid rgba(255,255,255,.15); }
-.logo-icon { font-size:28px; margin-bottom:6px; }
-.logo-title { font-size:15px; font-weight:700; }
-.logo-sub { font-size:10px; opacity:.6; margin-top:2px; }
-.nav-item { display:flex; align-items:center; gap:10px; padding:11px 16px; cursor:pointer; font-size:13px; border-left:3px solid transparent; transition:.15s; }
-.nav-item:hover { background:rgba(255,255,255,.08); }
-.nav-item.active { background:rgba(255,255,255,.15); border-left-color:#fff; }
-.sidebar-user { margin-top:auto; padding:14px 16px; border-top:1px solid rgba(255,255,255,.15); }
-.main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-.topbar { background:#fff; border-bottom:1px solid var(--borde); padding:12px 22px; display:flex; align-items:center; justify-content:space-between; }
-.topbar h2 { font-size:16px; color:var(--azul); font-weight:600; }
-.badge { background:var(--azul3); color:var(--azul2); font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; }
-.content { flex:1; overflow-y:auto; padding:18px 22px; }
-.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
-.card { background:#fff; border-radius:10px; border:1px solid var(--borde); padding:15px; }
-.metric-card { background:#fff; border-radius:10px; padding:14px; border:1px solid var(--borde); }
-.metric-label { font-size:11px; color:#888; margin-bottom:5px; }
-.metric-val { font-size:26px; font-weight:700; }
-.metric-sub { font-size:10px; margin-top:3px; }
-.card-title { font-size:13px; font-weight:600; color:var(--azul); margin-bottom:11px; }
-.habit-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #f0f4ff; }
-.habit-row:last-child { border-bottom:none; }
-.habit-check { width:24px; height:24px; border-radius:50%; border:2px solid #ddd; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:12px; transition:.15s; flex-shrink:0; }
-.habit-check.done { background:var(--verde); border-color:var(--verde); color:#fff; }
-.habit-streak { font-size:11px; color:#f57c00; font-weight:600; white-space:nowrap; }
-.prog-bar { height:7px; background:#e8eaf6; border-radius:4px; overflow:hidden; }
-.prog-fill { height:100%; border-radius:4px; transition:width .4s; }
-.event-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid #f0f4ff; }
-.event-item:last-child { border-bottom:none; }
-.event-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-.btn { background:var(--azul2); color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:12px; cursor:pointer; font-weight:500; }
-.btn:hover { background:var(--azul); }
-.tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; }
-.tag-trabajo { background:#e3f2fd; color:#1565c0; }
-.tag-estudio { background:#e8f5e9; color:#2e7d32; }
-.tag-salud { background:#fff3e0; color:#e65100; }
-.tag-personal { background:#f3e5f5; color:#6a1b9a; }
-.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-top:8px; }
-.cal-head { text-align:center; font-size:10px; color:#888; padding:4px; }
-.cal-day { text-align:center; padding:6px 2px; border-radius:5px; font-size:12px; cursor:pointer; position:relative; }
-.cal-day:hover { background:var(--azul3); }
-.cal-day.today { background:var(--azul2); color:#fff; font-weight:700; }
-.cal-day.has-event::after { content:''; width:4px; height:4px; background:#e65100; border-radius:50%; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); }
-.fin-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f0f4ff; font-size:13px; }
-.fin-row:last-child { border-bottom:none; }
-.monto-neg { color:#c62828; font-weight:600; }
-.alert-box { background:#fff3e0; border:1px solid #ffe0b2; border-radius:8px; padding:10px 14px; font-size:12px; color:#e65100; display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-.input-row { display:flex; gap:8px; margin-bottom:10px; }
-input[type=text], input[type=password], select { border:1px solid var(--borde); border-radius:6px; padding:8px 10px; font-size:13px; outline:none; color:#333; background:#fff; }
-input:focus, select:focus { border-color:var(--azul2); }
-.login-wrap { display:flex; align-items:center; justify-content:center; height:100vh; background:#1a237e; }
-.login-card { background:#fff; border-radius:16px; padding:40px 36px; width:340px; }
-.login-logo { text-align:center; margin-bottom:28px; }
-.login-logo h1 { font-size:22px; font-weight:700; color:var(--azul); margin-top:10px; }
-.login-logo p { font-size:12px; color:#888; margin-top:4px; }
-.form-group { margin-bottom:16px; }
-.form-group label { display:block; font-size:12px; color:#666; margin-bottom:5px; font-weight:500; }
-.form-group input { width:100%; border:1.5px solid #e0e0e0; border-radius:8px; padding:10px 12px; font-size:13px; outline:none; transition:.15s; }
-.form-group input:focus { border-color:var(--azul2); }
-.btn-login { width:100%; background:var(--azul); color:#fff; border:none; border-radius:8px; padding:12px; font-size:14px; font-weight:600; cursor:pointer; }
-.btn-login:hover { background:var(--azul2); }
-.demo-hint { font-size:11px; color:#aaa; text-align:center; margin-top:14px; }
-.err-msg { color:#c62828; font-size:11px; margin-bottom:10px; }
-.scrollable { overflow-y:auto; max-height:220px; }
-.pref-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid #f0f4ff; }
-.pref-row:last-child { border-bottom:none; }
-.sec-badge { background:#e8f5e9; color:#1b5e20; padding:3px 12px; border-radius:20px; font-size:11px; font-weight:600; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4ff;color:#333;font-size:14px}
+:root{--azul:#1a237e;--azul2:#3949ab;--azul3:#e8eaf6;--verde:#2e7d32;--naranja:#e65100;--rojo:#c62828;--gris:#f5f5f5;--borde:#dde3ff}
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:210px;background:var(--azul);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-logo{padding:16px;border-bottom:1px solid rgba(255,255,255,.15)}
+.logo-title{font-size:17px;font-weight:700;color:#fff}
+.logo-sub{font-size:10px;color:rgba(255,255,255,.55);margin-top:3px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:13px;color:rgba(255,255,255,.75);border-left:3px solid transparent;transition:.15s}
+.nav-item:hover{background:rgba(255,255,255,.08)}
+.nav-item.active{background:rgba(255,255,255,.15);border-left-color:#fff;color:#fff;font-weight:600}
+.nav-sep{height:1px;background:rgba(255,255,255,.12);margin:6px 14px}
+.sidebar-user{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.15)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#fff;border-bottom:1px solid var(--borde);padding:12px 22px;display:flex;align-items:center;justify-content:space-between}
+.topbar h2{font-size:16px;color:var(--azul);font-weight:600}
+.badge{background:var(--azul3);color:var(--azul2);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.content{flex:1;overflow-y:auto;padding:18px 22px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.card{background:#fff;border-radius:10px;border:1px solid var(--borde);padding:15px}
+.metric-card{background:#fff;border-radius:10px;padding:14px;border:1px solid var(--borde)}
+.metric-label{font-size:11px;color:#888;margin-bottom:5px}
+.metric-val{font-size:24px;font-weight:700}
+.metric-sub{font-size:10px;margin-top:3px;color:#888}
+.card-title{font-size:13px;font-weight:600;color:var(--azul);margin-bottom:11px}
+.habit-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f4ff}
+.habit-row:last-child{border-bottom:none}
+.habit-check{width:24px;height:24px;border-radius:50%;border:2px solid #ddd;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:.15s;flex-shrink:0}
+.habit-check.done{background:var(--verde);border-color:var(--verde);color:#fff}
+.habit-streak{font-size:11px;color:#f57c00;font-weight:600;white-space:nowrap}
+.prog-bar{height:7px;background:#e8eaf6;border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .4s}
+.event-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #f0f4ff}
+.event-item:last-child{border-bottom:none}
+.event-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.btn{background:var(--azul2);color:#fff;border:none;border-radius:6px;padding:8px 16px;font-size:12px;cursor:pointer;font-weight:500}
+.btn:hover{background:var(--azul)}
+.btn-outline{background:#fff;color:var(--azul2);border:1.5px solid var(--azul2);border-radius:6px;padding:7px 14px;font-size:12px;cursor:pointer;font-weight:500}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.tag-trabajo{background:#e3f2fd;color:#1565c0}
+.tag-estudio{background:#e8f5e9;color:#2e7d32}
+.tag-salud{background:#fff3e0;color:#e65100}
+.tag-personal{background:#f3e5f5;color:#6a1b9a}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:8px}
+.cal-head{text-align:center;font-size:10px;color:#888;padding:4px}
+.cal-day{text-align:center;padding:6px 2px;border-radius:5px;font-size:12px;cursor:pointer;position:relative}
+.cal-day:hover{background:var(--azul3)}
+.cal-day.today{background:var(--azul2);color:#fff;font-weight:700}
+.cal-day.has-event::after{content:'';width:4px;height:4px;background:#e65100;border-radius:50%;position:absolute;bottom:2px;left:50%;transform:translateX(-50%)}
+.fin-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f4ff;font-size:13px}
+.fin-row:last-child{border-bottom:none}
+.monto-neg{color:var(--rojo);font-weight:600}
+.alert-box{background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px 14px;font-size:12px;color:#e65100;margin-bottom:12px}
+.input-row{display:flex;gap:8px;margin-bottom:10px}
+input[type=text],input[type=password],select{border:1px solid var(--borde);border-radius:6px;padding:8px 10px;font-size:13px;outline:none;color:#333;background:#fff}
+input:focus,select:focus{border-color:var(--azul2)}
+.login-wrap{display:flex;align-items:center;justify-content:center;height:100vh;background:var(--azul)}
+.login-card{background:#fff;border-radius:16px;padding:40px 36px;width:340px}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo h1{font-size:20px;font-weight:700;color:var(--azul);margin-top:8px}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:11px;color:#666;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.form-group input{width:100%;border:1.5px solid #e0e0e0;border-radius:8px;padding:10px 12px;font-size:13px;outline:none;transition:.15s}
+.form-group input:focus{border-color:var(--azul2)}
+.btn-login{width:100%;background:var(--azul);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:600;cursor:pointer}
+.btn-login:hover{background:var(--azul2)}
+.err-msg{color:#c62828;font-size:11px;margin-bottom:10px}
+.pref-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f0f4ff}
+.pref-row:last-child{border-bottom:none}
+.report-wrap{background:#fff;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.report-header{background:var(--azul);padding:22px 26px}
+.report-header h1{color:#fff;font-size:19px;font-weight:700}
+.report-header p{color:rgba(255,255,255,.65);font-size:12px;margin-top:3px}
+.report-meta{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.report-meta span{color:rgba(255,255,255,.85);font-size:11px;background:rgba(255,255,255,.1);padding:3px 10px;border-radius:20px}
+.report-body{padding:22px 26px}
+.report-section{margin-bottom:24px}
+.report-section-title{font-size:13px;font-weight:700;color:var(--azul);border-bottom:2px solid var(--azul3);padding-bottom:7px;margin-bottom:12px}
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.report-metric{background:var(--azul3);border-radius:8px;padding:12px 14px;text-align:center}
+.report-metric .val{font-size:24px;font-weight:700}
+.report-metric .lbl{font-size:10px;color:#666;margin-top:3px}
+.report-table{width:100%;border-collapse:collapse;font-size:12px}
+.report-table th{background:var(--azul);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:11px}
+.report-table td{padding:7px 10px;border-bottom:1px solid var(--azul3)}
+.report-table tr:last-child td{border-bottom:none}
+.report-table tr:nth-child(even) td{background:#f8f9ff}
+.status-ok{color:var(--verde);font-weight:600}
+.status-warn{color:var(--naranja);font-weight:600}
+.status-bad{color:var(--rojo);font-weight:600}
+.report-footer{background:#f8f9ff;border-top:1px solid var(--borde);padding:12px 26px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#888}
+.tab-bar{display:flex;gap:6px;margin-bottom:14px}
+.tab{padding:8px 16px;font-size:12px;cursor:pointer;color:#888;border-radius:6px;border:1px solid var(--borde);background:#fff}
+.tab.active{background:var(--azul2);color:#fff;font-weight:600;border-color:var(--azul2)}
+.tab:hover:not(.active){background:var(--azul3);color:var(--azul2)}
+@media print{
+  .sidebar,.topbar,.tab-bar,.no-print{display:none !important}
+  .app{display:block}
+  .main{overflow:visible}
+  .content{padding:0;overflow:visible}
+  .report-wrap{border:none}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState} = React;
-
-const HABITS_INIT = [
-  {id:1,nombre:'Gym matutino',categoria:'salud',racha:7,completado:false},
-  {id:2,nombre:'Lectura 30 min',categoria:'estudio',racha:14,completado:true},
-  {id:3,nombre:'Meditacion',categoria:'personal',racha:3,completado:false},
-  {id:4,nombre:'Estudiar Sistemas',categoria:'estudio',racha:5,completado:true},
-  {id:5,nombre:'Sin redes sociales >1h',categoria:'personal',racha:2,completado:false},
+const {useState}=React;
+const HABITS=[
+  {id:1,nombre:'Gym matutino',categoria:'salud',racha:7,completado:false,pct:71},
+  {id:2,nombre:'Lectura 30 min',categoria:'estudio',racha:14,completado:true,pct:93},
+  {id:3,nombre:'Meditacion',categoria:'personal',racha:3,completado:false,pct:60},
+  {id:4,nombre:'Estudiar Sistemas',categoria:'estudio',racha:5,completado:true,pct:80},
+  {id:5,nombre:'Sin redes >1h',categoria:'personal',racha:2,completado:false,pct:55},
 ];
-const EVENTOS = [
+const EVENTOS=[
   {titulo:'Reunion INE',hora:'10:00 AM',categoria:'trabajo',dia:10},
-  {titulo:'Clase Ingenieria Software',hora:'4:00 PM',categoria:'estudio',dia:10},
+  {titulo:'Clase Ing. Software',hora:'4:00 PM',categoria:'estudio',dia:10},
   {titulo:'Gym',hora:'7:00 AM',categoria:'salud',dia:11},
-  {titulo:'Entrega Proyecto Final',hora:'11:59 PM',categoria:'estudio',dia:12},
-  {titulo:'Call con reclutador',hora:'2:00 PM',categoria:'trabajo',dia:13},
-  {titulo:'Revision finanzas',hora:'8:00 PM',categoria:'personal',dia:15},
+  {titulo:'Entrega Proyecto',hora:'11:59 PM',categoria:'estudio',dia:12},
+  {titulo:'Call reclutador',hora:'2:00 PM',categoria:'trabajo',dia:13},
+  {titulo:'Rev. finanzas',hora:'8:00 PM',categoria:'personal',dia:15},
 ];
-const GASTOS = [
+const GASTOS=[
   {desc:'Uber Eats',categoria:'Alimentacion',tarjeta:'Nu',monto:145},
   {desc:'Netflix',categoria:'Entretenimiento',tarjeta:'BBVA Platinum',monto:219},
   {desc:'Super semanal',categoria:'Alimentacion',tarjeta:'Banamex Oro',monto:380},
   {desc:'Gasolina',categoria:'Transporte',tarjeta:'Banamex Oro',monto:600},
   {desc:'Ropa',categoria:'Personal',tarjeta:'Rappy',monto:850},
 ];
-const TARJETAS = [
+const TARJETAS=[
   {nombre:'Banamex Oro',gasto:980,limite:5000,color:'#e65100'},
   {nombre:'BBVA Platinum',gasto:219,limite:8000,color:'#1565c0'},
   {nombre:'Nu',gasto:145,limite:3000,color:'#6a1b9a'},
   {nombre:'Rappy',gasto:850,limite:2000,color:'#2e7d32'},
 ];
-const CAT_COLOR = {trabajo:'#1565c0',estudio:'#2e7d32',salud:'#e65100',personal:'#6a1b9a'};
-const CAT_TAG   = {trabajo:'tag-trabajo',estudio:'tag-estudio',salud:'tag-salud',personal:'tag-personal'};
+const CC={trabajo:'#1565c0',estudio:'#2e7d32',salud:'#e65100',personal:'#6a1b9a'};
+const CT={trabajo:'tag-trabajo',estudio:'tag-estudio',salud:'tag-salud',personal:'tag-personal'};
 
-function App() {
-  const [loggedIn,setLoggedIn] = useState(false);
-  const [tab,setTab]           = useState('dashboard');
-  const [habits,setHabits]     = useState(HABITS_INIT);
-  const [email,setEmail]       = useState('');
-  const [pass,setPass]         = useState('');
-  const [loginErr,setLoginErr] = useState('');
-  const [newHabit,setNewHabit] = useState('');
-  const [newCat,setNewCat]     = useState('salud');
+function App(){
+  const [logged,setLogged]=useState(false);
+  const [tab,setTab]=useState('dashboard');
+  const [habits,setHabits]=useState(HABITS);
+  const [email,setEmail]=useState('');
+  const [pass,setPass]=useState('');
+  const [err,setErr]=useState('');
+  const [nh,setNh]=useState('');
+  const [nc,setNc]=useState('salud');
 
-  const login = () => {
-    if(!email.trim()||!pass.trim()){setLoginErr('Ingresa correo y contrasena.');return;}
-    if(pass.length<4){setLoginErr('Contrasena muy corta (minimo 4 caracteres).');return;}
-    setLoggedIn(true);
+  const login=()=>{
+    if(!email.trim()||!pass.trim()){setErr('Ingresa correo y contrasena.');return;}
+    if(pass.length<4){setErr('Contrasena minimo 4 caracteres.');return;}
+    setLogged(true);
   };
-  const toggle = id => setHabits(h=>h.map(x=>x.id===id?{...x,completado:!x.completado,racha:x.completado?x.racha-1:x.racha+1}:x));
-  const addHabit = () => {
-    if(!newHabit.trim())return;
-    setHabits(h=>[...h,{id:Date.now(),nombre:newHabit,categoria:newCat,racha:0,completado:false}]);
-    setNewHabit('');
+  const toggle=id=>setHabits(h=>h.map(x=>x.id===id?{...x,completado:!x.completado,racha:x.completado?x.racha-1:x.racha+1}:x));
+  const addHabit=()=>{
+    if(!nh.trim())return;
+    setHabits(h=>[...h,{id:Date.now(),nombre:nh,categoria:nc,racha:0,completado:false,pct:0}]);
+    setNh('');
   };
 
-  const done  = habits.filter(h=>h.completado).length;
-  const total = habits.length;
-  const pct   = Math.round((done/total)*100);
-  const totalGastos = GASTOS.reduce((a,b)=>a+b.monto,0);
-  const presupuesto = 3000;
+  const done=habits.filter(h=>h.completado).length;
+  const total=habits.length;
+  const pct=Math.round((done/total)*100);
+  const totalG=GASTOS.reduce((a,b)=>a+b.monto,0);
+  const presup=3000;
 
-  if(!loggedIn) return (
+  if(!logged) return(
     <div className="login-wrap">
       <div className="login-card">
         <div className="login-logo">
-          <div style={{fontSize:44}}>???</div>
+          <div style={{fontSize:38}}>LMS</div>
           <h1>Life Management System</h1>
-          <p>Sistema Integral de Gestion Personal v1.0</p>
+          <p style={{fontSize:11,color:'#aaa',marginTop:4}}>Sistema Integral de Gestion Personal v1.0</p>
         </div>
         <div className="form-group">
-          <label>Correo electronico</label>
+          <label>Correo</label>
           <input type="text" placeholder="usuario@ejemplo.com" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&login()}/>
         </div>
         <div className="form-group">
           <label>Contrasena</label>
           <input type="password" placeholder="min. 4 caracteres" value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==='Enter'&&login()}/>
         </div>
-        {loginErr&&<div className="err-msg">{loginErr}</div>}
+        {err&&<div className="err-msg">{err}</div>}
         <button className="btn-login" onClick={login}>Iniciar sesion</button>
-        <p className="demo-hint">Demo: cualquier correo + contrasena de 4+ caracteres</p>
+        <p style={{fontSize:11,color:'#aaa',textAlign:'center',marginTop:12}}>Demo: cualquier correo + contrasena 4+ chars</p>
       </div>
     </div>
   );
 
   const NAVS=[
-    {id:'dashboard',icon:'?',label:'Dashboard'},
-    {id:'habitos',icon:'?',label:'Habitos'},
-    {id:'calendario',icon:'?',label:'Calendario'},
-    {id:'finanzas',icon:'?',label:'Finanzas'},
-    {id:'perfil',icon:'?',label:'Perfil'},
+    {id:'dashboard',icon:'📊',label:'Dashboard'},
+    {id:'habitos',icon:'✅',label:'Habitos'},
+    {id:'calendario',icon:'📅',label:'Calendario'},
+    {id:'finanzas',icon:'💳',label:'Finanzas'},
+    null,
+    {id:'reportes',icon:'📋',label:'Reportes'},
+    {id:'perfil',icon:'👤',label:'Perfil'},
   ];
-  const TITLES={dashboard:'Dashboard Principal',habitos:'Habitos Diarios',calendario:'Calendario',finanzas:'Finanzas Personales',perfil:'Perfil y Preferencias'};
+  const TITLES={dashboard:'Dashboard',habitos:'Habitos Diarios',calendario:'Calendario',finanzas:'Finanzas',reportes:'Reportes del Sistema',perfil:'Perfil'};
 
-  return (
+  return(
     <div className="app">
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="logo-icon">???</div>
-          <div className="logo-title">LMS</div>
+          <div className="logo-title">⚙ LMS</div>
           <div className="logo-sub">Life Management System</div>
         </div>
-        {NAVS.map(n=>(
+        {NAVS.map((n,i)=>n===null?<div key={i} className="nav-sep"/>:
           <div key={n.id} className={'nav-item'+(tab===n.id?' active':'')} onClick={()=>setTab(n.id)}>
-            <span style={{fontSize:17}}>{n.icon}</span>{n.label}
+            <span style={{fontSize:16}}>{n.icon}</span>{n.label}
           </div>
-        ))}
+        )}
         <div className="sidebar-user">
-          <div style={{fontSize:13,fontWeight:600,color:'#fff'}}>{email}</div>
-          <div style={{fontSize:10,opacity:.6,marginTop:2}}>Estudiante de Sistemas</div>
-          <div style={{marginTop:10,fontSize:11,opacity:.7,cursor:'pointer'}} onClick={()=>setLoggedIn(false)}>Cerrar sesion</div>
+          <div style={{fontSize:12,fontWeight:600,color:'#fff'}}>{email}</div>
+          <div style={{fontSize:10,color:'rgba(255,255,255,.5)',marginTop:2}}>Estudiante · INE</div>
+          <div style={{marginTop:10,fontSize:11,color:'rgba(255,255,255,.45)',cursor:'pointer'}} onClick={()=>setLogged(false)}>Cerrar sesion</div>
         </div>
       </aside>
-
       <div className="main">
         <div className="topbar">
           <h2>{TITLES[tab]}</h2>
@@ -208,49 +237,39 @@ function App() {
           </div>
         </div>
         <div className="content">
-          {tab==='dashboard'  && <Dashboard habits={habits} toggle={toggle} done={done} total={total} pct={pct} totalGastos={totalGastos} presupuesto={presupuesto}/>}
-          {tab==='habitos'    && <Habitos habits={habits} toggle={toggle} done={done} total={total} pct={pct} newHabit={newHabit} setNewHabit={setNewHabit} newCat={newCat} setNewCat={setNewCat} addHabit={addHabit}/>}
-          {tab==='calendario' && <Calendario/>}
-          {tab==='finanzas'   && <Finanzas totalGastos={totalGastos} presupuesto={presupuesto}/>}
-          {tab==='perfil'     && <Perfil email={email}/>}
+          {tab==='dashboard'&&<Dashboard habits={habits} toggle={toggle} done={done} total={total} pct={pct} totalG={totalG} presup={presup}/>}
+          {tab==='habitos'&&<Habitos habits={habits} toggle={toggle} done={done} total={total} pct={pct} nh={nh} setNh={setNh} nc={nc} setNc={setNc} addHabit={addHabit}/>}
+          {tab==='calendario'&&<Calendario/>}
+          {tab==='finanzas'&&<Finanzas totalG={totalG} presup={presup}/>}
+          {tab==='reportes'&&<Reportes habits={habits} done={done} total={total} pct={pct} totalG={totalG} presup={presup}/>}
+          {tab==='perfil'&&<Perfil email={email}/>}
         </div>
       </div>
     </div>
   );
 }
 
-function Dashboard({habits,toggle,done,total,pct,totalGastos,presupuesto}) {
-  const hoy = EVENTOS.filter(e=>e.dia===10);
-  const bars = [80,100,60,100,40,0,0];
+function Dashboard({habits,toggle,done,total,pct,totalG,presup}){
+  const hoy=EVENTOS.filter(e=>e.dia===10);
+  const bars=[80,100,60,100,40,0,0];
   return(<>
     <div className="grid-4">
-      {[
-        {label:'Habitos completados hoy',val:done+'/'+total,sub:'Meta diaria',c:'#2e7d32'},
-        {label:'Racha mas larga',val:'14',sub:'Lectura diaria',c:'#e65100'},
-        {label:'Gastos del mes (MXN)',val:'$'+totalGastos.toLocaleString(),sub:totalGastos>presupuesto?'Sobre presupuesto':'Dentro del limite',c:'#c62828'},
-        {label:'Eventos esta semana',val:'6',sub:'2 hoy',c:'#1a237e'},
-      ].map((m,i)=>(
-        <div key={i} className="metric-card">
-          <div className="metric-label">{m.label}</div>
-          <div className="metric-val" style={{color:m.c}}>{m.val}</div>
-          <div className="metric-sub" style={{color:'#888'}}>{m.sub}</div>
-        </div>
-      ))}
+      {[{l:'Habitos hoy',v:`${done}/${total}`,s:'Meta diaria',c:'#2e7d32'},
+        {l:'Racha maxima',v:'14',s:'Lectura diaria',c:'#e65100'},
+        {l:'Gastos mes (MXN)',v:`$${totalG.toLocaleString()}`,s:totalG>presup?'Sobre presupuesto':'Dentro limite',c:'#c62828'},
+        {l:'Eventos semana',v:'6',s:'2 hoy',c:'#1a237e'}
+      ].map((m,i)=><div key={i} className="metric-card"><div className="metric-label">{m.l}</div><div className="metric-val" style={{color:m.c}}>{m.v}</div><div className="metric-sub">{m.s}</div></div>)}
     </div>
     <div className="grid-2">
       <div className="card">
         <div className="card-title">Habitos de hoy</div>
-        <div className="prog-bar" style={{marginBottom:10}}>
-          <div className="prog-fill" style={{width:pct+'%',background:'#2e7d32'}}/>
-        </div>
+        <div className="prog-bar" style={{marginBottom:10}}><div className="prog-fill" style={{width:`${pct}%`,background:'#2e7d32'}}/></div>
         <div style={{fontSize:11,color:'#888',marginBottom:10}}>{pct}% completados</div>
         {habits.map(h=>(
           <div key={h.id} className="habit-row">
-            <div className={'habit-check'+(h.completado?' done':'')} onClick={()=>toggle(h.id)}>
-              {h.completado&&'v'}
-            </div>
+            <div className={'habit-check'+(h.completado?' done':'')} onClick={()=>toggle(h.id)}>{h.completado&&'v'}</div>
             <span style={{flex:1,fontSize:13,textDecoration:h.completado?'line-through':'none',color:h.completado?'#aaa':'#333'}}>{h.nombre}</span>
-            <span className="habit-streak">Racha: {h.racha}</span>
+            <span className="habit-streak">Racha:{h.racha}</span>
           </div>
         ))}
       </div>
@@ -258,24 +277,19 @@ function Dashboard({habits,toggle,done,total,pct,totalGastos,presupuesto}) {
         <div className="card-title">Eventos de hoy</div>
         {hoy.map((e,i)=>(
           <div key={i} className="event-item">
-            <div className="event-dot" style={{background:CAT_COLOR[e.categoria]}}/>
-            <div>
-              <div style={{fontSize:13,fontWeight:500}}>{e.titulo}</div>
-              <div style={{fontSize:11,color:'#888',marginTop:2}}>{e.hora} &middot; <span className={'tag '+CAT_TAG[e.categoria]}>{e.categoria}</span></div>
-            </div>
+            <div className="event-dot" style={{background:CC[e.categoria]}}/>
+            <div><div style={{fontSize:13,fontWeight:500}}>{e.titulo}</div><div style={{fontSize:11,color:'#888',marginTop:2}}>{e.hora} · <span className={'tag '+CT[e.categoria]}>{e.categoria}</span></div></div>
           </div>
         ))}
-        <div style={{marginTop:10,padding:'9px 12px',background:'#e8f5e9',borderRadius:7,fontSize:12,color:'#2e7d32'}}>
-          Tienes 3 horas libres para time blocking esta tarde.
-        </div>
+        <div style={{marginTop:10,padding:'9px 12px',background:'#e8f5e9',borderRadius:7,fontSize:12,color:'#2e7d32'}}>3 horas libres para time blocking esta tarde.</div>
       </div>
     </div>
     <div className="card">
-      <div className="card-title">Progreso semanal de habitos</div>
-      <div style={{display:'flex',gap:8,alignItems:'flex-end',height:80,paddingTop:8}}>
+      <div className="card-title">Progreso semanal</div>
+      <div style={{display:'flex',gap:8,alignItems:'flex-end',height:75}}>
         {['L','M','X','J','V','S','D'].map((d,i)=>(
           <div key={d} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:4}}>
-            <div style={{width:'100%',height:bars[i]+'%',background:bars[i]>=80?'#2e7d32':bars[i]>0?'#1a237e':'#eee',borderRadius:'3px 3px 0 0',minHeight:4}}/>
+            <div style={{width:'100%',height:`${bars[i]}%`,background:bars[i]>=80?'#2e7d32':bars[i]>0?'#1a237e':'#eee',borderRadius:'3px 3px 0 0',minHeight:4}}/>
             <span style={{fontSize:10,color:'#888'}}>{d}</span>
           </div>
         ))}
@@ -284,18 +298,16 @@ function Dashboard({habits,toggle,done,total,pct,totalGastos,presupuesto}) {
   </>);
 }
 
-function Habitos({habits,toggle,done,total,pct,newHabit,setNewHabit,newCat,setNewCat,addHabit}) {
+function Habitos({habits,toggle,done,total,pct,nh,setNh,nc,setNc,addHabit}){
   return(<>
     {total-done>0&&<div className="alert-box">Tienes {total-done} habito(s) pendiente(s) hoy.</div>}
     <div className="card" style={{marginBottom:14}}>
-      <div className="card-title">Agregar nuevo habito</div>
+      <div className="card-title">Agregar habito</div>
       <div className="input-row">
-        <input type="text" placeholder="Nombre del habito..." value={newHabit} style={{flex:1}} onChange={e=>setNewHabit(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addHabit()}/>
-        <select value={newCat} onChange={e=>setNewCat(e.target.value)}>
-          <option value="salud">Salud</option>
-          <option value="estudio">Estudio</option>
-          <option value="trabajo">Trabajo</option>
-          <option value="personal">Personal</option>
+        <input type="text" placeholder="Nombre..." value={nh} style={{flex:1}} onChange={e=>setNh(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addHabit()}/>
+        <select value={nc} onChange={e=>setNc(e.target.value)}>
+          <option value="salud">Salud</option><option value="estudio">Estudio</option>
+          <option value="trabajo">Trabajo</option><option value="personal">Personal</option>
         </select>
         <button className="btn" onClick={addHabit}>Agregar</button>
       </div>
@@ -303,22 +315,18 @@ function Habitos({habits,toggle,done,total,pct,newHabit,setNewHabit,newCat,setNe
     <div className="card">
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
         <div className="card-title" style={{margin:0}}>Mis habitos — {done}/{total}</div>
-        <span style={{fontSize:12,color:'#888'}}>{pct}% completados</span>
+        <span style={{fontSize:12,color:'#888'}}>{pct}%</span>
       </div>
-      <div className="prog-bar" style={{marginBottom:14}}>
-        <div className="prog-fill" style={{width:pct+'%',background:pct>=80?'#2e7d32':'#1a237e'}}/>
-      </div>
+      <div className="prog-bar" style={{marginBottom:14}}><div className="prog-fill" style={{width:`${pct}%`,background:pct>=80?'#2e7d32':'#1a237e'}}/></div>
       {habits.map(h=>(
         <div key={h.id} className="habit-row">
-          <div className={'habit-check'+(h.completado?' done':'')} onClick={()=>toggle(h.id)} style={{fontSize:14}}>
-            {h.completado&&'v'}
-          </div>
+          <div className={'habit-check'+(h.completado?' done':'')} onClick={()=>toggle(h.id)} style={{fontSize:14}}>{h.completado&&'v'}</div>
           <div style={{flex:1}}>
             <div style={{fontSize:13,fontWeight:500,textDecoration:h.completado?'line-through':'none',color:h.completado?'#aaa':'#333'}}>{h.nombre}</div>
-            <span className={'tag '+CAT_TAG[h.categoria]}>{h.categoria}</span>
+            <span className={'tag '+CT[h.categoria]}>{h.categoria}</span>
           </div>
           <div style={{textAlign:'right'}}>
-            <div className="habit-streak">Racha: {h.racha} dias</div>
+            <div className="habit-streak">Racha: {h.racha}</div>
             <div style={{fontSize:10,color:'#aaa'}}>{h.completado?'Completado':'Pendiente'}</div>
           </div>
         </div>
@@ -327,133 +335,352 @@ function Habitos({habits,toggle,done,total,pct,newHabit,setNewHabit,newCat,setNe
   </>);
 }
 
-function Calendario() {
-  const eventDias = EVENTOS.map(e=>e.dia);
+function Calendario(){
+  const ed=EVENTOS.map(e=>e.dia);
   return(<>
     <div className="grid-2">
       <div className="card">
         <div className="card-title">Mayo 2025</div>
         <div className="cal-grid">
           {['L','M','X','J','V','S','D'].map(d=><div key={d} className="cal-head">{d}</div>)}
-          {[null,null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map((d,i)=>
-            d?<div key={i} className={'cal-day'+(d===10?' today':'')+(eventDias.includes(d)?' has-event':'')}>{d}</div>:<div key={i}/>
-          )}
+          {[null,null,null,null,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+            .map((d,i)=>d?<div key={i} className={'cal-day'+(d===10?' today':'')+(ed.includes(d)?' has-event':'')}>{d}</div>:<div key={i}/>)}
         </div>
       </div>
       <div className="card">
         <div className="card-title">Proximos eventos</div>
-        <div className="scrollable">
-          {EVENTOS.map((e,i)=>(
-            <div key={i} className="event-item">
-              <div className="event-dot" style={{background:CAT_COLOR[e.categoria]}}/>
-              <div style={{flex:1}}>
-                <div style={{fontSize:13,fontWeight:500}}>{e.titulo}</div>
-                <div style={{fontSize:11,color:'#888',marginTop:2}}>Mayo {e.dia} &middot; {e.hora}</div>
-              </div>
-              <span className={'tag '+CAT_TAG[e.categoria]}>{e.categoria}</span>
-            </div>
-          ))}
-        </div>
+        {EVENTOS.map((e,i)=>(
+          <div key={i} className="event-item">
+            <div className="event-dot" style={{background:CC[e.categoria]}}/>
+            <div style={{flex:1}}><div style={{fontSize:13,fontWeight:500}}>{e.titulo}</div><div style={{fontSize:11,color:'#888',marginTop:2}}>Mayo {e.dia} · {e.hora}</div></div>
+            <span className={'tag '+CT[e.categoria]}>{e.categoria}</span>
+          </div>
+        ))}
       </div>
     </div>
     <div className="card">
-      <div className="card-title">Time Blocking sugerido — Hoy (10 Mayo)</div>
-      {[
-        {h:'7:00-8:00 AM',act:'Gym matutino',bg:'#e8f5e9',tc:'#2e7d32'},
-        {h:'10:00-7:00 PM',act:'Trabajo INE',bg:'#e3f2fd',tc:'#1565c0'},
-        {h:'4:00-5:00 PM',act:'Clase Ingenieria de Software',bg:'#e8f5e9',tc:'#2e7d32'},
-        {h:'7:30-8:30 PM',act:'Lectura y estudio personal',bg:'#f3e5f5',tc:'#6a1b9a'},
-        {h:'9:00-10:00 PM',act:'Avance Proyecto Final Ingenieria SW',bg:'#fff3e0',tc:'#e65100'},
-      ].map((b,i)=>(
-        <div key={i} style={{display:'flex',gap:10,padding:'9px 12px',background:b.bg,borderRadius:7,marginBottom:7,alignItems:'center'}}>
-          <span style={{fontSize:11,color:b.tc,fontWeight:600,minWidth:130}}>{b.h}</span>
-          <span style={{fontSize:13,color:b.tc}}>{b.act}</span>
+      <div className="card-title">Time Blocking sugerido — Hoy</div>
+      {[['7:00-8:00 AM','Gym matutino','#e8f5e9','#2e7d32'],
+        ['10:00-7:00 PM','Trabajo INE','#e3f2fd','#1565c0'],
+        ['4:00-5:00 PM','Clase Ingenieria de Software','#e8f5e9','#2e7d32'],
+        ['7:30-8:30 PM','Lectura y estudio personal','#f3e5f5','#6a1b9a'],
+        ['9:00-10:00 PM','Avance Proyecto Final','#fff3e0','#e65100']
+      ].map(([h,a,bg,tc],i)=>(
+        <div key={i} style={{display:'flex',gap:10,padding:'9px 12px',background:bg,borderRadius:7,marginBottom:7,alignItems:'center'}}>
+          <span style={{fontSize:11,color:tc,fontWeight:600,minWidth:130}}>{h}</span>
+          <span style={{fontSize:13,color:tc}}>{a}</span>
         </div>
       ))}
     </div>
   </>);
 }
 
-function Finanzas({totalGastos,presupuesto}) {
-  const pct = Math.min(Math.round((totalGastos/presupuesto)*100),100);
+function Finanzas({totalG,presup}){
+  const p=Math.min(Math.round((totalG/presup)*100),100);
   return(<>
-    {totalGastos>presupuesto&&<div className="alert-box">Has superado tu presupuesto mensual de ${presupuesto.toLocaleString()} MXN</div>}
+    {totalG>presup&&<div className="alert-box">Has superado tu presupuesto mensual de ${presup.toLocaleString()} MXN</div>}
     <div className="grid-2">
       <div className="card">
         <div className="card-title">Resumen del mes</div>
-        <div style={{fontSize:34,fontWeight:700,color:'#c62828',marginBottom:4}}>${totalGastos.toLocaleString()}</div>
-        <div style={{fontSize:12,color:'#888',marginBottom:12}}>de ${presupuesto.toLocaleString()} MXN presupuestados</div>
-        <div className="prog-bar">
-          <div className="prog-fill" style={{width:pct+'%',background:pct>100?'#c62828':pct>80?'#e65100':'#2e7d32'}}/>
-        </div>
-        <div style={{fontSize:11,color:'#888',marginTop:6}}>{pct}% del presupuesto utilizado</div>
+        <div style={{fontSize:32,fontWeight:700,color:'#c62828',marginBottom:4}}>${totalG.toLocaleString()}</div>
+        <div style={{fontSize:12,color:'#888',marginBottom:12}}>de ${presup.toLocaleString()} MXN presupuestados</div>
+        <div className="prog-bar"><div className="prog-fill" style={{width:`${p}%`,background:p>100?'#c62828':p>80?'#e65100':'#2e7d32'}}/></div>
+        <div style={{fontSize:11,color:'#888',marginTop:6}}>{p}% del presupuesto utilizado</div>
       </div>
       <div className="card">
         <div className="card-title">Gasto por tarjeta</div>
         {TARJETAS.map((t,i)=>(
           <div key={i} style={{marginBottom:10}}>
             <div style={{display:'flex',justifyContent:'space-between',fontSize:12,marginBottom:3}}>
-              <span style={{fontWeight:500}}>{t.nombre}</span>
-              <span style={{color:'#c62828',fontWeight:600}}>${t.gasto.toLocaleString()}</span>
+              <span style={{fontWeight:500}}>{t.nombre}</span><span style={{color:'#c62828',fontWeight:600}}>${t.gasto.toLocaleString()}</span>
             </div>
-            <div className="prog-bar">
-              <div className="prog-fill" style={{width:Math.round((t.gasto/t.limite)*100)+'%',background:t.color}}/>
-            </div>
+            <div className="prog-bar"><div className="prog-fill" style={{width:`${Math.round((t.gasto/t.limite)*100)}%`,background:t.color}}/></div>
             <div style={{fontSize:10,color:'#aaa',marginTop:2}}>Limite: ${t.limite.toLocaleString()}</div>
           </div>
         ))}
       </div>
     </div>
     <div className="card">
-      <div className="card-title">Ultimos gastos registrados</div>
+      <div className="card-title">Ultimos gastos</div>
       {GASTOS.map((g,i)=>(
         <div key={i} className="fin-row">
-          <div>
-            <div style={{fontSize:13,fontWeight:500}}>{g.desc}</div>
-            <div style={{fontSize:11,color:'#888'}}>{g.tarjeta} &middot; {g.categoria}</div>
-          </div>
+          <div><div style={{fontSize:13,fontWeight:500}}>{g.desc}</div><div style={{fontSize:11,color:'#888'}}>{g.tarjeta} · {g.categoria}</div></div>
           <span className="monto-neg">-${g.monto.toLocaleString()}</span>
         </div>
       ))}
       <div style={{borderTop:'1px solid #f0f4ff',marginTop:8,paddingTop:8,display:'flex',justifyContent:'space-between',fontWeight:600}}>
-        <span>Total del mes</span>
-        <span style={{color:'#c62828'}}>-${totalGastos.toLocaleString()}</span>
+        <span>Total</span><span style={{color:'#c62828'}}>-${totalG.toLocaleString()}</span>
       </div>
     </div>
   </>);
 }
 
-function Perfil({email}) {
-  const [nombre,setNombre] = useState('');
-  const [saved,setSaved]   = useState(false);
-  const save = ()=>{setSaved(true);setTimeout(()=>setSaved(false),2500);};
+function Reportes({habits,done,total,pct,totalG,presup}){
+  const [tipo,setTipo]=useState('general');
+  const [gen,setGen]=useState(false);
+  const [loading,setLoading]=useState(false);
+
+  const generar=()=>{setLoading(true);setTimeout(()=>{setLoading(false);setGen(true);},800);};
+  const print=()=>window.print();
+
+  const avgPct=Math.round(habits.reduce((a,h)=>a+h.pct,0)/habits.length);
+  const mejor=habits.reduce((a,b)=>a.pct>b.pct?a:b);
+  const score=Math.round(pct*0.4+avgPct*0.4+(totalG<presup?80:40)*0.2);
+  const gastoCat=GASTOS.reduce((acc,g)=>{acc[g.categoria]=(acc[g.categoria]||0)+g.monto;return acc;},{});
+
+  return(<>
+    <div className="card" style={{marginBottom:14}}>
+      <div className="card-title">Generador de Reportes LMS</div>
+      <div style={{fontSize:13,color:'#666',marginBottom:14}}>Selecciona el tipo de reporte para el periodo actual (Mayo 2025).</div>
+      <div className="tab-bar">
+        {[['general','Reporte General'],['habitos','Reporte de Habitos'],['financiero','Reporte Financiero']].map(([id,label])=>(
+          <div key={id} className={'tab'+(tipo===id?' active':'')} onClick={()=>{setTipo(id);setGen(false);}}>{label}</div>
+        ))}
+      </div>
+      <div style={{display:'flex',gap:10,alignItems:'center'}}>
+        <button className="btn" onClick={generar} disabled={loading}>{loading?'Generando...':'Generar Reporte'}</button>
+        {gen&&<button className="btn-outline no-print" onClick={print}>Imprimir / Exportar</button>}
+        {gen&&<span style={{fontSize:11,color:'#2e7d32',fontWeight:600}}>Reporte generado — Mayo 2025</span>}
+      </div>
+    </div>
+
+    {gen&&tipo==='general'&&(
+      <div className="report-wrap">
+        <div className="report-header">
+          <h1>Reporte General del Dashboard</h1>
+          <p>Sistema Integral de Gestion Personal (LMS) — Generado automaticamente</p>
+          <div className="report-meta">
+            <span>Periodo: Mayo 2025</span><span>Fecha: 10/05/2025</span><span>Usuario: Demo User</span><span>LMS v1.0</span>
+          </div>
+        </div>
+        <div className="report-body">
+          <div className="report-section">
+            <div className="report-section-title">Puntuacion de Productividad del Mes</div>
+            <div style={{display:'flex',alignItems:'center',gap:20,padding:'14px',background:'#e8eaf6',borderRadius:10}}>
+              <div style={{width:72,height:72,borderRadius:'50%',background:score>=75?'#2e7d32':score>=50?'#e65100':'#c62828',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:26,fontWeight:700,flexShrink:0}}>{score}</div>
+              <div>
+                <div style={{fontSize:16,fontWeight:700,color:'#1a237e'}}>{score>=75?'Productividad Alta':score>=50?'Productividad Media':'Productividad Baja'}</div>
+                <div style={{fontSize:12,color:'#666',marginTop:4}}>Basado en cumplimiento de habitos ({pct}%), consistencia mensual ({avgPct}%) y control financiero.</div>
+                <div style={{display:'flex',gap:8,marginTop:8,flexWrap:'wrap'}}>
+                  <span style={{background:'#e8f5e9',color:'#2e7d32',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>Habitos: {pct}% hoy</span>
+                  <span style={{background:'#e3f2fd',color:'#1565c0',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>Racha max: 14 dias</span>
+                  <span style={{background:'#fff3e0',color:'#e65100',padding:'2px 8px',borderRadius:20,fontSize:11,fontWeight:600}}>Gastos: ${totalG.toLocaleString()}/$3,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="report-section">
+            <div className="report-section-title">Resumen de Habitos</div>
+            <div className="report-grid">
+              <div className="report-metric"><div className="val" style={{color:'#2e7d32'}}>{done}/{total}</div><div className="lbl">Completados hoy</div></div>
+              <div className="report-metric"><div className="val" style={{color:'#e65100'}}>14 dias</div><div className="lbl">Racha mas larga</div></div>
+              <div className="report-metric"><div className="val" style={{color:'#1a237e'}}>{avgPct}%</div><div className="lbl">Cumplimiento mensual promedio</div></div>
+            </div>
+            <table className="report-table">
+              <thead><tr><th>Habito</th><th>Categoria</th><th>Racha</th><th>Cumplimiento mes</th><th>Estado hoy</th></tr></thead>
+              <tbody>
+                {habits.map(h=>(
+                  <tr key={h.id}>
+                    <td style={{fontWeight:500}}>{h.nombre}</td>
+                    <td><span className={'tag '+CT[h.categoria]}>{h.categoria}</span></td>
+                    <td style={{fontWeight:600,color:'#f57c00'}}>{h.racha} dias</td>
+                    <td>
+                      <div style={{display:'flex',alignItems:'center',gap:6}}>
+                        <div className="prog-bar" style={{width:70,height:5,display:'inline-block'}}><div className="prog-fill" style={{width:`${h.pct}%`,background:h.pct>=80?'#2e7d32':'#e65100'}}/></div>
+                        <span style={{fontSize:11}}>{h.pct}%</span>
+                      </div>
+                    </td>
+                    <td className={h.completado?'status-ok':'status-warn'}>{h.completado?'Completado':'Pendiente'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="report-section">
+            <div className="report-section-title">Resumen Financiero</div>
+            <div className="report-grid">
+              <div className="report-metric"><div className="val" style={{color:'#c62828'}}>${totalG.toLocaleString()}</div><div className="lbl">Gasto total del mes</div></div>
+              <div className="report-metric"><div className="val" style={{color:totalG>presup?'#c62828':'#2e7d32'}}>{Math.round((totalG/presup)*100)}%</div><div className="lbl">Presupuesto utilizado</div></div>
+              <div className="report-metric"><div className="val" style={{color:'#1a237e'}}>{Object.keys(gastoCat).length}</div><div className="lbl">Categorias de gasto</div></div>
+            </div>
+            <table className="report-table">
+              <thead><tr><th>Concepto</th><th>Tarjeta</th><th>Categoria</th><th>Monto</th><th>% del total</th></tr></thead>
+              <tbody>
+                {GASTOS.map((g,i)=>(
+                  <tr key={i}>
+                    <td style={{fontWeight:500}}>{g.desc}</td><td>{g.tarjeta}</td><td>{g.categoria}</td>
+                    <td className="monto-neg">-${g.monto.toLocaleString()}</td>
+                    <td>{Math.round((g.monto/totalG)*100)}%</td>
+                  </tr>
+                ))}
+                <tr style={{fontWeight:700}}><td colSpan={3}>TOTAL</td><td style={{color:'#c62828'}}>-${totalG.toLocaleString()}</td><td>100%</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="report-section">
+            <div className="report-section-title">Resumen de Eventos — Mayo 2025</div>
+            <div className="report-grid">
+              <div className="report-metric"><div className="val" style={{color:'#1a237e'}}>{EVENTOS.length}</div><div className="lbl">Total eventos</div></div>
+              <div className="report-metric"><div className="val" style={{color:'#1565c0'}}>2</div><div className="lbl">Eventos de trabajo</div></div>
+              <div className="report-metric"><div className="val" style={{color:'#2e7d32'}}>2</div><div className="lbl">Eventos de estudio</div></div>
+            </div>
+            <table className="report-table">
+              <thead><tr><th>Evento</th><th>Fecha</th><th>Hora</th><th>Categoria</th></tr></thead>
+              <tbody>
+                {EVENTOS.map((e,i)=>(
+                  <tr key={i}><td style={{fontWeight:500}}>{e.titulo}</td><td>Mayo {e.dia}, 2025</td><td>{e.hora}</td><td><span className={'tag '+CT[e.categoria]}>{e.categoria}</span></td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="report-footer">
+          <span>LMS v1.0 — Life Management System · Reporte generado el 10/05/2025</span>
+          <button className="btn-outline no-print" onClick={print}>Imprimir reporte</button>
+        </div>
+      </div>
+    )}
+
+    {gen&&tipo==='habitos'&&(
+      <div className="report-wrap">
+        <div className="report-header">
+          <h1>Reporte de Habitos Diarios</h1>
+          <p>Analisis de consistencia y rendimiento de habitos personales</p>
+          <div className="report-meta"><span>Periodo: Mayo 2025</span><span>Fecha: 10/05/2025</span><span>Usuario: Demo User</span></div>
+        </div>
+        <div className="report-body">
+          <div className="report-section">
+            <div className="report-section-title">Indicadores Clave</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
+              {[{v:`${done}/${total}`,l:'Completados hoy',c:'#2e7d32'},{v:'14 dias',l:'Racha maxima',c:'#e65100'},
+                {v:`${avgPct}%`,l:'Promedio mensual',c:'#1a237e'},{v:mejor.nombre.substring(0,10),l:'Mejor habito',c:'#6a1b9a'}
+              ].map((m,i)=><div key={i} className="report-metric"><div className="val" style={{color:m.c,fontSize:18}}>{m.v}</div><div className="lbl">{m.l}</div></div>)}
+            </div>
+          </div>
+          <div className="report-section">
+            <div className="report-section-title">Detalle por Habito</div>
+            <table className="report-table">
+              <thead><tr><th>Habito</th><th>Categoria</th><th>Racha</th><th>Cumplimiento mes</th><th>Tendencia</th><th>Estado</th></tr></thead>
+              <tbody>
+                {habits.map(h=>(
+                  <tr key={h.id}>
+                    <td style={{fontWeight:500}}>{h.nombre}</td>
+                    <td><span className={'tag '+CT[h.categoria]}>{h.categoria}</span></td>
+                    <td style={{color:'#f57c00',fontWeight:600}}>{h.racha} dias</td>
+                    <td><div style={{display:'flex',alignItems:'center',gap:6}}><div className="prog-bar" style={{width:80,height:5}}><div className="prog-fill" style={{width:`${h.pct}%`,background:h.pct>=80?'#2e7d32':'#e65100'}}/></div><b>{h.pct}%</b></div></td>
+                    <td>{h.pct>=80?'Mejorando':h.pct>=60?'Estable':'Necesita atencion'}</td>
+                    <td className={h.completado?'status-ok':'status-warn'}>{h.completado?'Completado':'Pendiente'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="report-section">
+            <div className="report-section-title">Recomendaciones del Sistema</div>
+            {habits.filter(h=>h.pct<70).map(h=>(
+              <div key={h.id} style={{background:'#fff3e0',border:'1px solid #ffe0b2',borderRadius:7,padding:'9px 12px',marginBottom:8,fontSize:12}}>
+                <b style={{color:'#e65100'}}>{h.nombre} ({h.pct}%):</b> <span style={{color:'#666'}}>Considera ajustar el horario del recordatorio para mejorar la consistencia.</span>
+              </div>
+            ))}
+            {habits.filter(h=>h.pct>=80).map(h=>(
+              <div key={h.id} style={{background:'#e8f5e9',border:'1px solid #a5d6a7',borderRadius:7,padding:'9px 12px',marginBottom:8,fontSize:12}}>
+                <b style={{color:'#2e7d32'}}>{h.nombre} ({h.pct}%):</b> <span style={{color:'#666'}}>Excelente consistencia. Considera aumentar la duracion o dificultad de este habito.</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="report-footer">
+          <span>LMS v1.0 · Reporte de Habitos · Mayo 2025</span>
+          <button className="btn-outline no-print" onClick={print}>Imprimir</button>
+        </div>
+      </div>
+    )}
+
+    {gen&&tipo==='financiero'&&(
+      <div className="report-wrap">
+        <div className="report-header">
+          <h1>Reporte Financiero Personal</h1>
+          <p>Analisis de gastos, presupuesto y salud financiera del mes</p>
+          <div className="report-meta"><span>Periodo: Mayo 2025</span><span>Fecha: 10/05/2025</span><span>Usuario: Demo User</span></div>
+        </div>
+        <div className="report-body">
+          <div className="report-section">
+            <div className="report-section-title">Resumen Financiero del Mes</div>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
+              {[{v:`$${totalG.toLocaleString()}`,l:'Gasto total MXN',c:'#c62828'},{v:'$3,000',l:'Presupuesto mensual',c:'#1a237e'},
+                {v:`${Math.round((totalG/presup)*100)}%`,l:'Presupuesto usado',c:'#e65100'},{v:`$${(presup-totalG).toLocaleString()}`,l:'Disponible',c:totalG<presup?'#2e7d32':'#c62828'}
+              ].map((m,i)=><div key={i} className="report-metric"><div className="val" style={{color:m.c,fontSize:18}}>{m.v}</div><div className="lbl">{m.l}</div></div>)}
+            </div>
+          </div>
+          <div className="report-section">
+            <div className="report-section-title">Detalle por Tarjeta</div>
+            <table className="report-table">
+              <thead><tr><th>Tarjeta</th><th>Gasto</th><th>Limite</th><th>% Utilizado</th><th>Estatus</th></tr></thead>
+              <tbody>
+                {TARJETAS.map((t,i)=>{const p2=Math.round((t.gasto/t.limite)*100);return(
+                  <tr key={i}>
+                    <td style={{fontWeight:500}}>{t.nombre}</td>
+                    <td style={{color:'#c62828',fontWeight:600}}>${t.gasto.toLocaleString()}</td>
+                    <td>${t.limite.toLocaleString()}</td>
+                    <td><div style={{display:'flex',alignItems:'center',gap:6}}><div className="prog-bar" style={{width:70,height:5}}><div className="prog-fill" style={{width:`${p2}%`,background:p2>80?'#c62828':'#1a237e'}}/></div>{p2}%</div></td>
+                    <td className={p2>80?'status-warn':'status-ok'}>{p2>80?'Casi al limite':'Normal'}</td>
+                  </tr>
+                );})}
+              </tbody>
+            </table>
+          </div>
+          <div className="report-section">
+            <div className="report-section-title">Gastos por Categoria</div>
+            <table className="report-table">
+              <thead><tr><th>Categoria</th><th>Total</th><th>% del mes</th><th>Transacciones</th></tr></thead>
+              <tbody>
+                {Object.entries(gastoCat).sort((a,b)=>b[1]-a[1]).map(([cat,monto],i)=>(
+                  <tr key={i}>
+                    <td style={{fontWeight:500}}>{cat}</td>
+                    <td style={{color:'#c62828',fontWeight:600}}>${monto.toLocaleString()}</td>
+                    <td>{Math.round((monto/totalG)*100)}%</td>
+                    <td>{GASTOS.filter(g=>g.categoria===cat).length}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="report-footer">
+          <span>LMS v1.0 · Reporte Financiero · Mayo 2025</span>
+          <button className="btn-outline no-print" onClick={print}>Imprimir</button>
+        </div>
+      </div>
+    )}
+  </>);
+}
+
+function Perfil({email}){
+  const [nombre,setNombre]=useState('');
+  const [saved,setSaved]=useState(false);
+  const save=()=>{setSaved(true);setTimeout(()=>setSaved(false),2500);};
   return(<>
     <div className="grid-2">
       <div className="card">
         <div className="card-title">Informacion personal</div>
         {[
-          {label:'Nombre completo',el:<input type="text" style={{width:'100%'}} value={nombre} onChange={e=>setNombre(e.target.value)} placeholder="Tu nombre completo..."/>},
-          {label:'Correo electronico',el:<input type="text" style={{width:'100%',opacity:.7}} value={email} readOnly/>},
-          {label:'Zona horaria',el:<select style={{width:'100%'}}><option>America/Mexico_City (CST)</option><option>America/Cancun (EST)</option></select>},
-          {label:'Horas de alta energia',el:<select style={{width:'100%'}}><option>7:00 AM - 10:00 AM</option><option>8:00 AM - 11:00 AM</option></select>},
+          {l:'Nombre',el:<input type="text" style={{width:'100%'}} value={nombre} onChange={e=>setNombre(e.target.value)} placeholder="Tu nombre..."/>},
+          {l:'Correo',el:<input type="text" style={{width:'100%',opacity:.7}} value={email} readOnly/>},
+          {l:'Zona horaria',el:<select style={{width:'100%'}}><option>America/Mexico_City (CST)</option></select>},
+          {l:'Alta energia',el:<select style={{width:'100%'}}><option>7:00 AM - 10:00 AM</option></select>},
         ].map((f,i)=>(
           <div key={i} style={{marginBottom:12}}>
-            <label style={{display:'block',fontSize:12,color:'#666',marginBottom:4,fontWeight:500}}>{f.label}</label>
-            {f.el}
+            <label style={{display:'block',fontSize:11,color:'#666',marginBottom:4,fontWeight:600}}>{f.l}</label>{f.el}
           </div>
         ))}
-        <button className="btn" onClick={save}>{saved?'Guardado correctamente':'Guardar cambios'}</button>
+        <button className="btn" onClick={save}>{saved?'Guardado':'Guardar cambios'}</button>
       </div>
       <div className="card">
-        <div className="card-title">Preferencias del sistema</div>
-        {[
-          ['Notificaciones push','Activadas'],
-          ['Recordatorio de habitos','7:00 AM'],
-          ['Revision semanal','Domingo 8:00 PM'],
-          ['Tema visual','Claro'],
-          ['Moneda','MXN (Peso mexicano)'],
-          ['Idioma','Espanol (Mexico)'],
-        ].map(([k,v],i)=>(
+        <div className="card-title">Preferencias</div>
+        {[['Notificaciones','Activadas'],['Recordatorio','7:00 AM'],['Rev. semanal','Dom 8PM'],['Moneda','MXN'],['Idioma','Espanol']].map(([k,v],i)=>(
           <div key={i} className="pref-row">
             <span style={{fontSize:12,color:'#666'}}>{k}</span>
             <span style={{fontSize:12,fontWeight:500,color:'#1a237e'}}>{v}</span>
@@ -462,32 +689,16 @@ function Perfil({email}) {
       </div>
     </div>
     <div className="card">
-      <div className="card-title">Estado de seguridad</div>
+      <div className="card-title">Seguridad</div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span style={{fontSize:12,color:'#666'}}>JWT activo &middot; bcrypt &middot; TLS 1.3 &middot; 0 vulnerabilidades OWASP</span>
-        <span className="sec-badge">Seguro</span>
-      </div>
-    </div>
-    <div className="card" style={{marginTop:14}}>
-      <div className="card-title">Estadisticas generales</div>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10}}>
-        {[
-          {v:'14',l:'Dias de racha maxima',c:'#e65100'},
-          {v:'84%',l:'Habitos cumplidos (mes)',c:'#2e7d32'},
-          {v:'6',l:'Eventos esta semana',c:'#1a237e'},
-          {v:'78.5',l:'Puntuacion SUS',c:'#6a1b9a'},
-        ].map((s,i)=>(
-          <div key={i} style={{textAlign:'center',padding:'12px 8px',background:'#f0f4ff',borderRadius:8}}>
-            <div style={{fontSize:24,fontWeight:700,color:s.c}}>{s.v}</div>
-            <div style={{fontSize:10,color:'#888',marginTop:4}}>{s.l}</div>
-          </div>
-        ))}
+        <span style={{fontSize:12,color:'#666'}}>JWT activo · bcrypt · TLS 1.3 · 0 vulnerabilidades OWASP</span>
+        <span style={{background:'#e8f5e9',color:'#1b5e20',padding:'3px 12px',borderRadius:20,fontSize:11,fontWeight:600}}>Seguro</span>
       </div>
     </div>
   </>);
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App/>,document.getElementById('root'));
 </script>
 </body>
 </html>
